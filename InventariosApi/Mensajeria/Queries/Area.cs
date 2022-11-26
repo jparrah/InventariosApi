@@ -9,7 +9,7 @@ namespace InventariosApi.Mensajeria.Queries
         public class ListarAreasResponse
         {
             public int Id { get; set; }
-            public string Nombre { get; set; }
+            public string NombreArea { get; set; }
         }
 
         public record ObtenerAreaRequest(int Id):IRequest<ObtenerAreaResponse>;
@@ -17,7 +17,7 @@ namespace InventariosApi.Mensajeria.Queries
         public class ObtenerAreaResponse
         {
             public int Id { get; set; }
-            public string Nombre { get; set;}
+            public string NombreArea { get; set;}
         }
     }
 }

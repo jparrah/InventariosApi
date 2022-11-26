@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventariosApi.Handlers.Command
 {
-    public class AreaHandlers : IRequestHandler<CrearAreaRequest, bool>,
+    public class AreaHandlers : IRequestHandler<RegistrarAreaRequest, bool>,
                       IRequestHandler<ModificarAreaRequest, ModificarAreaResponse>,
                       IRequestHandler<EliminarAreaRequest, bool>
     { 
@@ -19,7 +19,7 @@ namespace InventariosApi.Handlers.Command
             _context = context;
         }
 
-        public async Task<bool> Handle(CrearAreaRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RegistrarAreaRequest request, CancellationToken cancellationToken)
         {
             var ok = false;
             var nuevaArea=_mapper.Map<Area>(request);
@@ -35,7 +35,7 @@ namespace InventariosApi.Handlers.Command
         public async Task<ModificarAreaResponse> Handle(ModificarAreaRequest request, CancellationToken cancellationToken)
         {
             
-            var area=_context.Area.Where(x => x.Id==request.id).FirstOrDefault();
+            var area=_context.Area.Where(x => x.Id==request.Id).FirstOrDefault();
            
                 var areaModificada=_mapper.Map<Area>(request);
                 _context.Area.Update(areaModificada);

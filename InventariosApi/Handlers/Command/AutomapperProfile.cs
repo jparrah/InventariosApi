@@ -9,8 +9,8 @@ namespace InventariosApi.Handlers.Command
     {
         public AutomapperProfile()
         {
-            CreateMap<CrearAreaRequest, Area>();
-            CreateMap<Area, ObtenerAreaResponse>();
+            CreateMap<RegistrarAreaRequest, Area>();
+            CreateMap<Area, ModificarAreaResponse>();
         }
     }
 }

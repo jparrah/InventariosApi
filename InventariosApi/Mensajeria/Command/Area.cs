@@ -4,14 +4,14 @@ namespace InventariosApi.Mensajeria.Command
 {
     public class Area
     {
-        public record CrearAreaRequest( int Id,string Nombre):IRequest<bool>;
+        public record RegistrarAreaRequest( int Id,string NombreArea):IRequest<bool>;
 
-        public record ModificarAreaRequest(int id,string Nombre):IRequest<ModificarAreaResponse>;
+        public record ModificarAreaRequest(int Id,string NombreArea):IRequest<ModificarAreaResponse>;
 
         public class ModificarAreaResponse
         {
             public int Id { get; set; }
-            public string Nombre { get; set; }
+            public string NombreArea { get; set; }
         }
         public record EliminarAreaRequest(int Id):IRequest<bool>;
     }

@@ -15,9 +15,9 @@ namespace InventariosApi.Controllers.Command
             _mediator= mediator;
         }
 
-        [HttpPost("CrearArea")]
+        [HttpPost("RegistrarArea")]
         [ProducesResponseType(typeof(bool), (int)System.Net.HttpStatusCode.OK)]
-        public async Task<IActionResult> CrearArea([FromBody] CrearAreaRequest request)
+        public async Task<IActionResult> CrearArea([FromBody] RegistrarAreaRequest request)
         {
             var respuesta = await _mediator.Send(request);
             return Ok(respuesta);
