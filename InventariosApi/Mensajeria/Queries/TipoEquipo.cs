@@ -11,7 +11,7 @@ namespace InventariosApi.Mensajeria.Queries
             public int Id { get; set; }
             public string NombreTipoEquipo { get; set; }
         }
-        public record ObtenerTipoEquipoRequest(int Id):IRequest<ObtenerTipoEquipoRequest>;
+        public record ObtenerTipoEquipoRequest(int Id):IRequest<ObtenerTipoEquipoResponse>;
 
         public class ObtenerTipoEquipoResponse
         {

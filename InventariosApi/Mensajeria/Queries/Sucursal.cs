@@ -14,7 +14,7 @@ namespace InventariosApi.Mensajeria.Queries
             public string NombreSucursal { get; set; }
         }
 
-        public record ObtenerSucursalRequest(int Id):IRequest<ObtenerSucursalRequest>;
+        public record ObtenerSucursalRequest(int Id):IRequest<ObtenerSucursalResponse>;
 
         public class ObtenerSucursalResponse
         {

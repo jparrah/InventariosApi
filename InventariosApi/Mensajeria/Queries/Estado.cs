@@ -4,7 +4,7 @@ namespace InventariosApi.Mensajeria.Queries
 {
     public class Estado
     {
-        public record ListarEstadosRequest():IRequest<IEnumerable<ListarEstadosRequest>>;
+        public record ListarEstadosRequest():IRequest<IEnumerable<ListarEstadosResponse>>;
 
         public class ListarEstadosResponse
         {
