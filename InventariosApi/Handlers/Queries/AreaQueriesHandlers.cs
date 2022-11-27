@@ -5,12 +5,12 @@ using static InventariosApi.Mensajeria.Queries.Area;
 
 namespace InventariosApi.Handlers.Queries
 {
-    public class AreaHandlers:IRequestHandler<ListarAreasRequest,IEnumerable<ListarAreasResponse>>,
+    public class AreaQueriesHandlers:IRequestHandler<ListarAreasRequest,IEnumerable<ListarAreasResponse>>,
                               IRequestHandler<ObtenerAreaRequest,ObtenerAreaResponse>
     {
         private readonly IMapper _mapper;
         private readonly InventariosDbContext _context;
-        public AreaHandlers(IMapper mapper, InventariosDbContext context)
+        public AreaQueriesHandlers(IMapper mapper, InventariosDbContext context)
         {
             _mapper = mapper;
             _context = context;

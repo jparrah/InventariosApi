@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventariosApi.Handlers.Command
 {
-    public class AreaHandlers : IRequestHandler<RegistrarAreaRequest, bool>,
+    public class AreaCommandHandlers : IRequestHandler<RegistrarAreaRequest, bool>,
                       IRequestHandler<ModificarAreaRequest, ModificarAreaResponse>,
                       IRequestHandler<EliminarAreaRequest, bool>
     { 
         private readonly IMapper _mapper;
         private readonly InventariosDbContext _context;
-        public AreaHandlers(IMapper mapper, InventariosDbContext context)
+        public AreaCommandHandlers(IMapper mapper, InventariosDbContext context)
         {
             _mapper = mapper;
             _context = context;

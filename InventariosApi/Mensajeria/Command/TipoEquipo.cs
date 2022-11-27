@@ -4,9 +4,9 @@ namespace InventariosApi.Mensajeria.Command
 {
     public class TipoEquipo
     {
-        public record RegistarTipoEquipo(int Id,string NombreTipoEquipo):IRequest<bool>;
+        public record RegistarTipoEquipoRequest(int Id,string NombreTipoEquipo):IRequest<bool>;
 
-        public record ModificarTipoEquipo(int Id,string NombreTipoEquipo):IRequest<ModificarTipoEquipoResponse>;
+        public record ModificarTipoEquipoRequest(int Id,string NombreTipoEquipo):IRequest<ModificarTipoEquipoResponse>;
 
         public class ModificarTipoEquipoResponse
         {
