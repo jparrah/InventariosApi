@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventariosApi.Entidades;
 using MediatR;
 using static InventariosApi.Mensajeria.Command.Defectacion;
 
@@ -16,19 +17,35 @@ namespace InventariosApi.Handlers.Command
             _context = context;
         }
 
-        public Task<bool> Handle(RegistarDefectacionRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RegistarDefectacionRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var nuevaDefectacion = _mapper.Map<Defectacion>(request);
+            _context.Defectaciones.Add(nuevaDefectacion);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
+
         }
 
-        public Task<ModificarDefectacionResponse> Handle(ModificarDefectacionRequest request, CancellationToken cancellationToken)
+        public async Task<ModificarDefectacionResponse> Handle(ModificarDefectacionRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var defectacion= _context.Defectaciones.Where(x=>x.Id==request.Id).FirstOrDefault() ?? default;
+            var defectacionModificada=_mapper.Map(request,defectacion);
+            _context.Defectaciones.Update(defectacionModificada);
+            _context.SaveChanges();
+            return _mapper.Map<ModificarDefectacionResponse>(defectacionModificada);
+
         }
 
-        public Task<bool> Handle(EliminarDefectacionRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EliminarDefectacionRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var defectacion=_context.Defectaciones.Where(x=>x.Id==request.Id).FirstOrDefault() ?? default;
+            _context.Defectaciones.Remove(defectacion);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
     }
 }

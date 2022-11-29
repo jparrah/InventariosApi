@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using InventariosApi.Entidades;
 using MediatR;
+using static InventariosApi.Mensajeria.Command.Defectacion;
 using static InventariosApi.Mensajeria.Command.Estado;
 
 namespace InventariosApi.Handlers.Command
@@ -16,19 +18,33 @@ namespace InventariosApi.Handlers.Command
             _context = context;
         }
 
-        public Task<bool> Handle(RegistarEstadoRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RegistarEstadoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var nuevaEstado = _mapper.Map<Estado>(request);
+            _context.Estados.Add(nuevaEstado);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
 
-        public Task<ModificarEstadoResponse> Handle(ModificarEstadoRequest request, CancellationToken cancellationToken)
+        public async Task<ModificarEstadoResponse> Handle(ModificarEstadoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var estado = _context.Estados.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            var estadoModificado = _mapper.Map(request,estado);
+             _context.Estados.Update(estadoModificado);
+            _context.SaveChanges();
+            return _mapper.Map<ModificarEstadoResponse>(estadoModificado);
         }
 
-        public Task<bool> Handle(EliminarEstadoRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EliminarEstadoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var estado = _context.Estados.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            _context.Estados.Remove(estado);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
     }
 }

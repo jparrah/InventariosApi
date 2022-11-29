@@ -35,9 +35,9 @@ namespace InventariosApi.Handlers.Command
         public async Task<ModificarAreaResponse> Handle(ModificarAreaRequest request, CancellationToken cancellationToken)
         {
             
-            var area=_context.Area.Where(x => x.Id==request.Id).FirstOrDefault();
+               var area = _context.Area.Where(x => x.Id==request.Id).FirstOrDefault() ?? default;
            
-                var areaModificada=_mapper.Map<Area>(request);
+               var areaModificada=_mapper.Map(request,area);
                 _context.Area.Update(areaModificada);
                 _context.SaveChanges();
 
@@ -50,7 +50,7 @@ namespace InventariosApi.Handlers.Command
         public async  Task<bool> Handle(EliminarAreaRequest request, CancellationToken cancellationToken)
         {
             var ok=false;
-            var area=_context.Area.Where(x=>x.Id==request.Id).FirstOrDefault();
+            var area=_context.Area.Where(x=>x.Id==request.Id).FirstOrDefault() ?? default;
              _context.Area.Remove(area);
             _context.SaveChanges();
              ok= true;

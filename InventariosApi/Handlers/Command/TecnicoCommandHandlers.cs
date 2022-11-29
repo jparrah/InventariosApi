@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using InventariosApi.Entidades;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Command.Sucursal;
 using static InventariosApi.Mensajeria.Command.Tecnico;
 
 namespace InventariosApi.Handlers.Command
@@ -9,26 +12,40 @@ namespace InventariosApi.Handlers.Command
                                         IRequestHandler<EliminarTecnicoRequest, bool>
     {
         private readonly IMapper _mapper;
-        private readonly InventariosDbContext _contex;
-        public TecnicoCommandHandlers(IMapper mapper, InventariosDbContext contex)
+        private readonly InventariosDbContext _context;
+        public TecnicoCommandHandlers(IMapper mapper, InventariosDbContext context)
         {
             _mapper = mapper;
-            _contex = contex;
+            _context = context;
         }
 
-        public Task<bool> Handle(RegistrarTecnicoRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RegistrarTecnicoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var nuevoTecnico = _mapper.Map<Tecnico>(request);
+            _context.Tecnicos.Add(nuevoTecnico);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
 
-        public Task<ModificarTecnicoResponse> Handle(ModificarTecnicoRequest request, CancellationToken cancellationToken)
+        public async Task<ModificarTecnicoResponse> Handle(ModificarTecnicoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tecnico = _context.Tecnicos.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            var tecnicoModificado = _mapper.Map(request, tecnico);
+            _context.Tecnicos.Update(tecnicoModificado);
+            _context.SaveChanges();
+            return _mapper.Map<ModificarTecnicoResponse>(tecnicoModificado);
         }
 
-        public Task<bool> Handle(EliminarTecnicoRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EliminarTecnicoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var tecnico = _context.Tecnicos.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            _context.Tecnicos.Remove(tecnico);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
     }
 }

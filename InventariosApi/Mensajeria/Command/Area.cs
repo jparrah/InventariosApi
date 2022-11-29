@@ -6,6 +6,13 @@ namespace InventariosApi.Mensajeria.Command
     {
         public record RegistrarAreaRequest( int Id,string NombreArea):IRequest<bool>;
 
+        //public class RegistrarAreaRequest:IRequest<bool> 
+        //{ 
+        //    public int Id { get; set; }
+        //    public string NombreArea { get; set; }
+        //}
+
+
         public record ModificarAreaRequest(int Id,string NombreArea):IRequest<ModificarAreaResponse>;
 
         public class ModificarAreaResponse

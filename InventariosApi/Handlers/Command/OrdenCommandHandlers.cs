@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using InventariosApi.Entidades;
 using MediatR;
+using static InventariosApi.Mensajeria.Command.Labores;
 using static InventariosApi.Mensajeria.Command.Orden;
 
 namespace InventariosApi.Handlers.Command
@@ -16,19 +18,33 @@ namespace InventariosApi.Handlers.Command
             _context = context;
         }
 
-        public Task<bool> Handle(RegistrarOrdenRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RegistrarOrdenRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var nuevaOrden = _mapper.Map<Orden>(request);
+            _context.Ordenes.Add(nuevaOrden);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
 
-        public Task<ModificarOrdenResponse> Handle(ModificarOrdenRequest request, CancellationToken cancellationToken)
+        public async Task<ModificarOrdenResponse> Handle(ModificarOrdenRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var orden = _context.Ordenes.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            var ordenModificado = _mapper.Map(request, orden);
+            _context.Ordenes.Update(ordenModificado);
+            _context.SaveChanges();
+            return _mapper.Map<ModificarOrdenResponse>(ordenModificado);
         }
 
-        public Task<bool> Handle(EliminarOrdenRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EliminarOrdenRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ok = false;
+            var orden = _context.Ordenes.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            _context.Ordenes.Remove(orden);
+            _context.SaveChanges();
+            ok = true;
+            return ok;
         }
     }
 }
