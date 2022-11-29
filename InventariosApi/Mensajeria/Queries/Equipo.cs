@@ -26,6 +26,7 @@ namespace InventariosApi.Mensajeria.Queries
             public int Id { get; set; }
             public string NombreEquipo { get;}
             public string Serie { get;}
+            public  string Nombre { get; set; }
             public string Modelo { get;}
         }
 

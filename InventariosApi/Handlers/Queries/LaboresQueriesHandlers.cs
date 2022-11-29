@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Queries.Estado;
 using static InventariosApi.Mensajeria.Queries.Labores;
 
 namespace InventariosApi.Handlers.Queries
@@ -15,14 +17,22 @@ namespace InventariosApi.Handlers.Queries
             _context = context;
         }
 
-        public Task<IEnumerable<ListarLaboresResponse>> Handle(ListarLaboresRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarLaboresResponse>> Handle(ListarLaboresRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var labores = await _context.Labores.ToListAsync();
+            var listarLaboresResponse = new List<ListarLaboresResponse>();
+            foreach (var l in labores)
+            {
+                var xx = _mapper.Map<ListarLaboresResponse>(l);
+                listarLaboresResponse.Add(xx);
+            }
+            return listarLaboresResponse.AsEnumerable();
         }
 
-        public Task<ObtenerLaborResponse> Handle(ObtenerLaborRequest request, CancellationToken cancellationToken)
+        public async Task<ObtenerLaborResponse> Handle(ObtenerLaborRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var labor = _context.Labores.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            return _mapper.Map<ObtenerLaborResponse>(labor);
         }
     }
 }

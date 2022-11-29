@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Queries.Area;
 using static InventariosApi.Mensajeria.Queries.Defectacion;
 
 namespace InventariosApi.Handlers.Queries
@@ -15,14 +17,24 @@ namespace InventariosApi.Handlers.Queries
             _context = context;
         }
 
-        public Task<IEnumerable<ListarDefectacionesResponse>> Handle(ListarDefectacionesRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarDefectacionesResponse>> Handle(ListarDefectacionesRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var defectaciones = await _context.Defectaciones.ToListAsync();
+            var ListarDefectacionesResponse = new List<ListarDefectacionesResponse>();
+            foreach (var def in defectaciones)
+            {
+                var xx = _mapper.Map<ListarDefectacionesResponse>(def);
+                ListarDefectacionesResponse.Add(xx);
+            }
+            return ListarDefectacionesResponse.AsEnumerable();
         }
 
-        public Task<ObtenerDefectacionResponse> Handle(ObtenerDefectacionRequest request, CancellationToken cancellationToken)
+        public async Task<ObtenerDefectacionResponse> Handle(ObtenerDefectacionRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var defectacion = _context.Defectaciones.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            return  _mapper.Map<ObtenerDefectacionResponse>(defectacion);
+
+           
         }
     }
 }

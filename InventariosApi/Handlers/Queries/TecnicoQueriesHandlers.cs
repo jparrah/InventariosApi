@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Queries.Sucursal;
 using static InventariosApi.Mensajeria.Queries.Tecnico;
 
 namespace InventariosApi.Handlers.Queries
@@ -15,14 +17,22 @@ namespace InventariosApi.Handlers.Queries
             _context = context;
         }
 
-        public Task<IEnumerable<ListarTecnicosResponse>> Handle(ListarTecnicosRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarTecnicosResponse>> Handle(ListarTecnicosRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tecnicos = await _context.Tecnicos.ToListAsync();
+            var listarTecnicosResponse = new List<ListarTecnicosResponse>();
+            foreach (var t in tecnicos)
+            {
+                var xx = _mapper.Map<ListarTecnicosResponse>(t);
+                listarTecnicosResponse.Add(xx);
+            }
+            return listarTecnicosResponse.AsEnumerable();
         }
 
-        public Task<ObtenerTecnicoResponse> Handle(ObtenerTecnicoRequest request, CancellationToken cancellationToken)
+        public async Task<ObtenerTecnicoResponse> Handle(ObtenerTecnicoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tecnico = _context.Tecnicos.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            return _mapper.Map<ObtenerTecnicoResponse>(tecnico);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Queries.Orden;
 using static InventariosApi.Mensajeria.Queries.Sucursal;
 
 namespace InventariosApi.Handlers.Queries
@@ -15,14 +17,22 @@ namespace InventariosApi.Handlers.Queries
             _context = context;
         }
 
-        public Task<IEnumerable<ListarSucursalesResponse>> Handle(ListarSucursalesRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarSucursalesResponse>> Handle(ListarSucursalesRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var sucursales = await _context.Sucursales.ToListAsync();
+            var listarSucursalesResponse = new List<ListarSucursalesResponse>();
+            foreach (var s in sucursales)
+            {
+                var xx = _mapper.Map<ListarSucursalesResponse>(s);
+                listarSucursalesResponse.Add(xx);
+            }
+            return listarSucursalesResponse.AsEnumerable();
         }
 
-        public Task<ObtenerSucursalResponse> Handle(ObtenerSucursalRequest request, CancellationToken cancellationToken)
+        public async Task<ObtenerSucursalResponse> Handle(ObtenerSucursalRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var sucursal = _context.Sucursales.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            return _mapper.Map<ObtenerSucursalResponse>(sucursal);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Queries.Tecnico;
 using static InventariosApi.Mensajeria.Queries.TipoEquipo;
 
 namespace InventariosApi.Handlers.Queries
@@ -15,14 +17,22 @@ namespace InventariosApi.Handlers.Queries
             _context = context;
         }
 
-        public Task<IEnumerable<ListarTipoEquipoResponse>> Handle(ListarTipoEquipoRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarTipoEquipoResponse>> Handle(ListarTipoEquipoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tiposEquipos = await _context.TipoEquipos.ToListAsync();
+            var listarTipoEquiposResponse = new List<ListarTipoEquipoResponse>();
+            foreach (var t in tiposEquipos)
+            {
+                var xx = _mapper.Map<ListarTipoEquipoResponse>(t);
+                listarTipoEquiposResponse.Add(xx);
+            }
+            return listarTipoEquiposResponse.AsEnumerable();
         }
 
-        public Task<ObtenerTipoEquipoResponse> Handle(ObtenerTipoEquipoRequest request, CancellationToken cancellationToken)
+        public async Task<ObtenerTipoEquipoResponse> Handle(ObtenerTipoEquipoRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tipoEquipo = _context.TipoEquipos.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            return _mapper.Map<ObtenerTipoEquipoResponse>(tipoEquipo);
         }
     }
 }

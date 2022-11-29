@@ -30,7 +30,7 @@ namespace InventariosApi.Handlers.Queries
 
         public async Task<ObtenerAreaResponse> Handle(ObtenerAreaRequest request, CancellationToken cancellationToken)
         {
-            var area =  _context.Area.Where(x => x.Id == request.Id).FirstOrDefault();
+            var area =  _context.Area.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
             var obtenerAreaResponse=_mapper.Map<ObtenerAreaResponse>(area);
 
             return obtenerAreaResponse;

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static InventariosApi.Mensajeria.Queries.Labores;
 using static InventariosApi.Mensajeria.Queries.Orden;
 
 namespace InventariosApi.Handlers.Queries
@@ -15,14 +17,22 @@ namespace InventariosApi.Handlers.Queries
             _context = context;
         }
 
-        public Task<IEnumerable<ListarOrdenResponse>> Handle(ListarOrdenRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarOrdenResponse>> Handle(ListarOrdenRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var ordenes = await _context.Ordenes.ToListAsync();
+            var listarOrdenesResponse = new List<ListarOrdenResponse>();
+            foreach (var o in ordenes)
+            {
+                var xx = _mapper.Map<ListarOrdenResponse>(o);
+                listarOrdenesResponse.Add(xx);
+            }
+            return listarOrdenesResponse.AsEnumerable();
         }
 
-        public Task<ObtenerOrdenResponse> Handle(ObtenerOrdenRequest request, CancellationToken cancellationToken)
+        public async Task<ObtenerOrdenResponse> Handle(ObtenerOrdenRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var orden = _context.Ordenes.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            return _mapper.Map<ObtenerOrdenResponse>(orden);
         }
     }
 }
