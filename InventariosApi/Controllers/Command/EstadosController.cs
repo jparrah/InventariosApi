@@ -8,10 +8,10 @@ namespace InventariosApi.Controllers.Command
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EstadoController : Controller
+    public class EstadosController : Controller
     {
         private readonly IMediator _mediator;
-        public EstadoController(IMediator mediator)
+        public EstadosController(IMediator mediator)
         {
             _mediator = mediator;
         }

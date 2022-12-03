@@ -22,5 +22,7 @@ namespace InventariosApi
         public virtual DbSet<Sucursal> Sucursales { get; set; } = null!;
         public virtual DbSet<Tecnico> Tecnicos { get; set; } = null!;
         public virtual DbSet<TipoEquipo> TipoEquipos { get; set; } = null!;
+        public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
+
     }
 }
