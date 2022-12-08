@@ -1,5 +1,4 @@
-﻿using Azure.Identity;
-using MediatR;
+﻿using MediatR;
 
 namespace InventariosApi.Mensajeria.Queries
 {
