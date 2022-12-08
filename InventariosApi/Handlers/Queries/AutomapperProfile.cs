@@ -45,6 +45,8 @@ namespace InventariosApi.Handlers.Queries
                 .ForMember(x => x.NombreTecnico, opt => opt.MapFrom(x => x.TecnicoId))
                 .ForMember(x => x.NombreSucursal, opt => opt.MapFrom(x => x.SucursalId));
 
+           
+
             CreateMap<Orden, ObtenerOrdenResponse>()
                 .ForMember(x => x.NombreEquipo, opt => opt.MapFrom(x => x.EquiposId))
                 .ForMember(x => x.NombreTecnico, opt => opt.MapFrom(x => x.TecnicoId))

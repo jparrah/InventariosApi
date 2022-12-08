@@ -38,6 +38,7 @@ namespace InventariosApi.Handlers.Queries
                     new Claim(ClaimTypes.NameIdentifier, usuarioLogueado.UserName),
                     new Claim(ClaimTypes.Email,usuarioLogueado.Email),
                     new Claim(ClaimTypes.Role,usuarioLogueado.Role),
+                    
                 };
                 var token = new JwtSecurityToken(_config["JWT:Issuer"],
                    _config["JWT:Audience"],

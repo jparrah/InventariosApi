@@ -5,6 +5,15 @@ namespace InventariosApi.Mensajeria.Queries
     public class Orden
     {
         public record ListarOrdenRequest():IRequest<IEnumerable<ListarOrdenResponse>>;
+        public record ListarOrdenFechaTecnicoEstadoRequest(DateTime fechaInicial,
+                                                            DateTime fechaFinal,
+                                                            int tecnicoId,
+                                                            string estado):IRequest<IEnumerable<ListarOrdenResponse>>;
+
+        public record ListarOrdenFechaInventarioEstadoRequest(DateTime fechaInicial,
+                                                            DateTime fechaFinal,
+                                                            long inventario,
+                                                            string estado) : IRequest<IEnumerable<ListarOrdenResponse>>;
 
         public class ListarOrdenResponse
         {
