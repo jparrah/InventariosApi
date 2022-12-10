@@ -4,7 +4,7 @@ namespace InventariosApi.Mensajeria.Command
 {
     public class Sucursal
     {
-        public record RegistarSucursalRequest(int Id,int CodigoSucursal,string NombreSucursal):IRequest<bool>;
+        public record RegistarSucursalRequest(int CodigoSucursal,string NombreSucursal):IRequest<bool>;
 
         public record ModificarSucursalRequest(int Id,int CodigoSucursal,string NombreSucursal):IRequest<ModificarSucursalResponse>;
 

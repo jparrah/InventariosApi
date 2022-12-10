@@ -1,4 +1,5 @@
-﻿using InventariosApi.Mensajeria.Queries;
+﻿using InventariosApi.Handlers.Command;
+using InventariosApi.Mensajeria.Queries;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Plugins;
@@ -13,16 +14,19 @@ namespace InventariosApi.Handlers.Queries
     {
         private readonly IConfiguration _config;
         private readonly InventariosDbContext _context;
+        Utiles utiles;
         public LoginUsuario(IConfiguration config, InventariosDbContext context)
         {
             _config = config;
             _context = context;
+            utiles=new Utiles();
         }
 
         public async Task<string> Handle(LoginUsuarioRequest request, CancellationToken cancellationToken)
         {
+            var pass = utiles.GetSha256Hash(request.Password);
             var usuarioLogueado=_context.Usuarios.Where(x=>x.UserName==request.UserName.ToLower()
-                                                        && x.Password==request.Password.ToLower())
+                                                        && x.Password==pass.ToLower())
                                                         .FirstOrDefault();
             if (usuarioLogueado == null) {
 

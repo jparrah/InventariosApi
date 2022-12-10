@@ -5,7 +5,6 @@ namespace InventariosApi.Mensajeria.Command
     public class Tecnico
     {
         public record RegistrarTecnicoRequest(
-                        int Id,
                         long CI,
                         string Nombre,
                         string PrimerApellido,

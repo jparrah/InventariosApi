@@ -4,7 +4,7 @@ namespace InventariosApi.Mensajeria.Command
 {
     public class Area
     {
-        public record RegistrarAreaRequest( int Id,string NombreArea):IRequest<bool>;
+        public record RegistrarAreaRequest( string NombreArea):IRequest<bool>;
 
         //public class RegistrarAreaRequest:IRequest<bool> 
         //{ 

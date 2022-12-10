@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static InventariosApi.Mensajeria.Command.TipoEquipo;
@@ -7,6 +8,7 @@ using static InventariosApi.Mensajeria.Queries.Area;
 namespace InventariosApi.Controllers.Queries
 {
     [Route("api/[controller]")]
+    [Authorize(Roles ="ADMIN,USUARIO")]
     [ApiController]
     public class AreaController : Controller
     {

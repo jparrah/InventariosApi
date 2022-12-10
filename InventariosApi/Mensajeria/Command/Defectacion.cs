@@ -4,7 +4,7 @@ namespace InventariosApi.Mensajeria.Command
 {
     public class Defectacion
     {
-        public record RegistarDefectacionRequest(int Id,string NombreDefectacion):IRequest<bool>;
+        public record RegistarDefectacionRequest(string NombreDefectacion):IRequest<bool>;
         public record ModificarDefectacionRequest(int Id, string NombreDefectacion):IRequest<ModificarDefectacionResponse>;
 
         public class ModificarDefectacionResponse

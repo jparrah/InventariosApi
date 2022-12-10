@@ -1,12 +1,15 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using static InventariosApi.Mensajeria.Queries.Tecnico;
 using static InventariosApi.Mensajeria.Queries.TipoEquipo;
 
 namespace InventariosApi.Controllers.Queries
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "ADMIN,USUARIO")]
     [ApiController]
     public class TipoEquipoController : Controller
     {

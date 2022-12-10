@@ -31,7 +31,6 @@ namespace InventariosApi.Mensajeria.Command
         }
         public class RegistrarModificarComponentesRequest
         {
-            public int Id { get; set; }
             public int EquiposId { get; set; }
             public string Serie { get; set; }
             public string Nombre { get; set; }

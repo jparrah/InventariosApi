@@ -5,7 +5,6 @@ namespace InventariosApi.Mensajeria.Command
     public class Orden
     {
         public record RegistrarOrdenRequest(
-                                    int Id,
                                     int EquiposId,
                                     int TecnicoId,
                                     int SucursalId,

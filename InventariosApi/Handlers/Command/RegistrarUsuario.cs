@@ -38,7 +38,6 @@ namespace InventariosApi.Handlers.Command
             var passwordHash = utiles.GetSha256Hash(request.Password);
             var usuario = new Usuario
             {
-                Id = 1,
                 UserName=request.Username,
                 Password=passwordHash,
                 Email=request.Email,
