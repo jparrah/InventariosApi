@@ -43,7 +43,7 @@ namespace InventariosApi.Handlers.Queries
             var ordenesFechaTecnicoEstado = _context.Ordenes.Where(x => x.FechaEntrada > request.fechaInicial &&
                                           x.FechaEntrada < request.fechaFinal && 
                                           x.TecnicoId == request.tecnicoId &&
-                                          x.Equipos.Estado.NombreEstado==request.estado).ToList();
+                                          x.EquiposDefectados.Estado.NombreEstado==request.estado).ToList();
             var listarOrdenResponse=new List<ListarOrdenResponse>();
             foreach (var item in ordenesFechaTecnicoEstado)
             {
@@ -57,8 +57,8 @@ namespace InventariosApi.Handlers.Queries
         {
             var ordenesFechaInventarioEstado = _context.Ordenes.Where(x => x.FechaEntrada > request.fechaInicial &&
                                           x.FechaEntrada < request.fechaFinal &&
-                                          x.Equipos.Inventario == request.inventario &&
-                                          x.Equipos.Estado.NombreEstado == request.estado).ToList();
+                                          x.EquiposDefectados.Inventario == request.inventario &&
+                                          x.EquiposDefectados.Estado.NombreEstado == request.estado).ToList();
             var listarOrdenResponse = new List<ListarOrdenResponse>();
             foreach (var item in ordenesFechaInventarioEstado)
             {

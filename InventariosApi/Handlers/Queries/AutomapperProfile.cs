@@ -41,14 +41,14 @@ namespace InventariosApi.Handlers.Queries
             CreateMap<Labores, ListarLaboresResponse>();
             CreateMap<Labores, ObtenerLaborResponse>();
             CreateMap<Orden, ListarOrdenResponse>()
-                .ForMember(x => x.NombreEquipo, opt => opt.MapFrom(x => x.EquiposId))
+                .ForMember(x => x.NombreEquipo, opt => opt.MapFrom(x => x.EquiposDefectadosId))
                 .ForMember(x => x.NombreTecnico, opt => opt.MapFrom(x => x.TecnicoId))
                 .ForMember(x => x.NombreSucursal, opt => opt.MapFrom(x => x.SucursalId));
 
            
 
             CreateMap<Orden, ObtenerOrdenResponse>()
-                .ForMember(x => x.NombreEquipo, opt => opt.MapFrom(x => x.EquiposId))
+                .ForMember(x => x.NombreEquipo, opt => opt.MapFrom(x => x.EquiposDefectadosId))
                 .ForMember(x => x.NombreTecnico, opt => opt.MapFrom(x => x.TecnicoId))
                 .ForMember(x => x.NombreSucursal, opt => opt.MapFrom(x => x.SucursalId));
 

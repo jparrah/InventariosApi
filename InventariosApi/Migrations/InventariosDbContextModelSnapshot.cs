@@ -17,7 +17,7 @@ namespace InventariosApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.11")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -62,6 +62,9 @@ namespace InventariosApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("EquiposDefectadosId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EquiposId")
                         .HasColumnType("int");
 
@@ -78,6 +81,8 @@ namespace InventariosApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EquiposDefectadosId");
 
                     b.HasIndex("EquiposId");
 
@@ -115,10 +120,6 @@ namespace InventariosApi.Migrations
                     b.Property<float>("Depreciacion")
                         .HasColumnType("real");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("EstadoId")
                         .HasColumnType("int");
 
@@ -148,8 +149,6 @@ namespace InventariosApi.Migrations
                     b.HasIndex("TipoEquipoId");
 
                     b.ToTable("Equipos");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Equipos");
                 });
 
             modelBuilder.Entity("InventariosApi.Entidades.EquiposBaja", b =>
@@ -164,6 +163,9 @@ namespace InventariosApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EquiposDefectadosId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("FechaBaja")
                         .HasColumnType("datetime2");
 
@@ -172,10 +174,69 @@ namespace InventariosApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EquiposDefectadosId")
+                        .IsUnique();
+
                     b.HasIndex("OrdenId")
                         .IsUnique();
 
                     b.ToTable("EquiposBajas");
+                });
+
+            modelBuilder.Entity("InventariosApi.Entidades.EquiposDefectados", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AreaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DefectacionId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Depreciacion")
+                        .HasColumnType("real");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaReparada")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaSalida")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("Inventario")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Sello")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoEquipoId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Valor")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("DefectacionId");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("SucursalId");
+
+                    b.HasIndex("TipoEquipoId");
+
+                    b.ToTable("EquiposDefectados");
                 });
 
             modelBuilder.Entity("InventariosApi.Entidades.Estado", b =>
@@ -220,7 +281,7 @@ namespace InventariosApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("EquiposId")
+                    b.Property<int?>("EquiposDefectadosId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaEntrada")
@@ -238,9 +299,9 @@ namespace InventariosApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EquiposId")
+                    b.HasIndex("EquiposDefectadosId")
                         .IsUnique()
-                        .HasFilter("[EquiposId] IS NOT NULL");
+                        .HasFilter("[EquiposDefectadosId] IS NOT NULL");
 
                     b.HasIndex("SucursalId");
 
@@ -343,24 +404,6 @@ namespace InventariosApi.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("InventariosApi.Entidades.EquiposDefectados", b =>
-                {
-                    b.HasBaseType("InventariosApi.Entidades.Equipos");
-
-                    b.Property<int>("DefectacionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FechaReparada")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaSalida")
-                        .HasColumnType("datetime2");
-
-                    b.HasIndex("DefectacionId");
-
-                    b.HasDiscriminator().HasValue("EquiposDefectados");
-                });
-
             modelBuilder.Entity("EquiposDefectadosLabores", b =>
                 {
                     b.HasOne("InventariosApi.Entidades.EquiposDefectados", null)
@@ -378,6 +421,10 @@ namespace InventariosApi.Migrations
 
             modelBuilder.Entity("InventariosApi.Entidades.Componente", b =>
                 {
+                    b.HasOne("InventariosApi.Entidades.EquiposDefectados", null)
+                        .WithMany("Componentes")
+                        .HasForeignKey("EquiposDefectadosId");
+
                     b.HasOne("InventariosApi.Entidades.Equipos", "Equipos")
                         .WithMany("Componentes")
                         .HasForeignKey("EquiposId")
@@ -424,20 +471,71 @@ namespace InventariosApi.Migrations
 
             modelBuilder.Entity("InventariosApi.Entidades.EquiposBaja", b =>
                 {
+                    b.HasOne("InventariosApi.Entidades.EquiposDefectados", "EquiposDefectados")
+                        .WithOne("EquiposBaja")
+                        .HasForeignKey("InventariosApi.Entidades.EquiposBaja", "EquiposDefectadosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("InventariosApi.Entidades.Orden", "Orden")
                         .WithOne("EquiposBaja")
                         .HasForeignKey("InventariosApi.Entidades.EquiposBaja", "OrdenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("EquiposDefectados");
+
                     b.Navigation("Orden");
+                });
+
+            modelBuilder.Entity("InventariosApi.Entidades.EquiposDefectados", b =>
+                {
+                    b.HasOne("InventariosApi.Entidades.Area", "Area")
+                        .WithMany("EquiposDefectados")
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventariosApi.Entidades.Defectacion", "Defectacion")
+                        .WithMany("EquiposDefectados")
+                        .HasForeignKey("DefectacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventariosApi.Entidades.Estado", "Estado")
+                        .WithMany("EquiposDefectados")
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventariosApi.Entidades.Sucursal", "Sucursal")
+                        .WithMany("EquiposDefectados")
+                        .HasForeignKey("SucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventariosApi.Entidades.TipoEquipo", "Medios")
+                        .WithMany("EquiposDefectados")
+                        .HasForeignKey("TipoEquipoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Area");
+
+                    b.Navigation("Defectacion");
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Medios");
+
+                    b.Navigation("Sucursal");
                 });
 
             modelBuilder.Entity("InventariosApi.Entidades.Orden", b =>
                 {
-                    b.HasOne("InventariosApi.Entidades.Equipos", "Equipos")
+                    b.HasOne("InventariosApi.Entidades.EquiposDefectados", "EquiposDefectados")
                         .WithOne("Orden")
-                        .HasForeignKey("InventariosApi.Entidades.Orden", "EquiposId");
+                        .HasForeignKey("InventariosApi.Entidades.Orden", "EquiposDefectadosId");
 
                     b.HasOne("InventariosApi.Entidades.Sucursal", "Sucursal")
                         .WithMany("Ordenes")
@@ -449,27 +547,18 @@ namespace InventariosApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Equipos");
+                    b.Navigation("EquiposDefectados");
 
                     b.Navigation("Sucursal");
 
                     b.Navigation("Tecnico");
                 });
 
-            modelBuilder.Entity("InventariosApi.Entidades.EquiposDefectados", b =>
-                {
-                    b.HasOne("InventariosApi.Entidades.Defectacion", "Defectacion")
-                        .WithMany("EquiposDefectados")
-                        .HasForeignKey("DefectacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Defectacion");
-                });
-
             modelBuilder.Entity("InventariosApi.Entidades.Area", b =>
                 {
                     b.Navigation("Equipos");
+
+                    b.Navigation("EquiposDefectados");
                 });
 
             modelBuilder.Entity("InventariosApi.Entidades.Defectacion", b =>
@@ -480,6 +569,14 @@ namespace InventariosApi.Migrations
             modelBuilder.Entity("InventariosApi.Entidades.Equipos", b =>
                 {
                     b.Navigation("Componentes");
+                });
+
+            modelBuilder.Entity("InventariosApi.Entidades.EquiposDefectados", b =>
+                {
+                    b.Navigation("Componentes");
+
+                    b.Navigation("EquiposBaja")
+                        .IsRequired();
 
                     b.Navigation("Orden")
                         .IsRequired();
@@ -488,6 +585,8 @@ namespace InventariosApi.Migrations
             modelBuilder.Entity("InventariosApi.Entidades.Estado", b =>
                 {
                     b.Navigation("Equipos");
+
+                    b.Navigation("EquiposDefectados");
                 });
 
             modelBuilder.Entity("InventariosApi.Entidades.Orden", b =>
@@ -500,6 +599,8 @@ namespace InventariosApi.Migrations
                 {
                     b.Navigation("Equipos");
 
+                    b.Navigation("EquiposDefectados");
+
                     b.Navigation("Ordenes");
                 });
 
@@ -511,6 +612,8 @@ namespace InventariosApi.Migrations
             modelBuilder.Entity("InventariosApi.Entidades.TipoEquipo", b =>
                 {
                     b.Navigation("Equipos");
+
+                    b.Navigation("EquiposDefectados");
                 });
 #pragma warning restore 612, 618
         }

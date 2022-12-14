@@ -10,6 +10,7 @@ using static InventariosApi.Mensajeria.Command.Orden;
 using static InventariosApi.Mensajeria.Command.Sucursal;
 using static InventariosApi.Mensajeria.Command.Tecnico;
 using static InventariosApi.Mensajeria.Command.TipoEquipo;
+using static InventariosApi.Mensajeria.Command.EquipoDefectado;
 
 namespace InventariosApi.Handlers.Command
 {
@@ -44,6 +45,13 @@ namespace InventariosApi.Handlers.Command
             CreateMap<RegistarTipoEquipoRequest, TipoEquipo>();
             CreateMap<ModificarTipoEquipoRequest, TipoEquipo>();
             CreateMap<TipoEquipo, ModificarTipoEquipoResponse>();
+
+            CreateMap<EquiposDefectados, ModificarEquipoDefectadoResponse>()
+                .ForMember(x => x.NombreEstado, opt => opt.MapFrom(x => x.EstadoId))
+                .ForMember(x => x.NombreArea, opt => opt.MapFrom(x => x.AreaId))
+                .ForMember(x => x.NombreTipoEquipo, opt => opt.MapFrom(x => x.TipoEquipoId))
+                .ForMember(x => x.NombreSucursal, opt => opt.MapFrom(x => x.SucursalId))
+                .ForMember(x => x.NombreDefectacion, opt => opt.MapFrom(x => x.DefectacionId));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using InventariosApi.Entidades;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace InventariosApi
 {
@@ -10,6 +11,10 @@ namespace InventariosApi
         {
 
         }
+       
+
+
+        
         public virtual DbSet<Area> Area { get; set; } = null!;
         public virtual DbSet<Componente> Componentes { get; set; } = null!;
         public virtual DbSet<Defectacion> Defectaciones { get; set; } = null!;

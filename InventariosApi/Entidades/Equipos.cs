@@ -17,13 +17,12 @@ namespace InventariosApi.Entidades
         public long Inventario { get; set; }
         public float Valor { get; set; }
         public float Depreciacion { get; set; }
-        public long Sello { get; set; }
+        public string Sello { get; set; }
 
         public Estado Estado { get; set; }
         public Area Area { get; set; }
         public TipoEquipo Medios { get; set; }
         public Sucursal Sucursal { get; set; }
-        public Orden Orden { get; set; }
         public virtual ICollection<Componente> Componentes { get; set; }
 
 

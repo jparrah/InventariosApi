@@ -7,6 +7,7 @@ namespace InventariosApi.Entidades
         public Sucursal()
         {
             Equipos = new HashSet<Equipos>();
+            EquiposDefectados= new HashSet<EquiposDefectados>();
             Ordenes = new HashSet<Orden>();
         }
         [Key]
@@ -15,6 +16,7 @@ namespace InventariosApi.Entidades
         public string NombreSucursal { get; set; }
 
         public virtual ICollection<Equipos> Equipos { get; set; }
+        public virtual ICollection<EquiposDefectados> EquiposDefectados { get; set; }
         public virtual ICollection<Orden> Ordenes { get; set; }
     }
 }

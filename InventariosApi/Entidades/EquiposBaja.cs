@@ -7,8 +7,10 @@ namespace InventariosApi.Entidades
         [Key]
         public int Id { get; set; }
         public int OrdenId { get; set; }
+        public int EquiposDefectadosId { get; set; }
         public DateTime FechaBaja { get; set; }
         public string Comentario { get; set; }
         public Orden Orden { get; set; }
+        public EquiposDefectados EquiposDefectados { get; set; }
     }
 }

@@ -133,11 +133,7 @@ namespace InventariosApi.Migrations
                     Inventario = table.Column<long>(type: "bigint", nullable: false),
                     Valor = table.Column<float>(type: "real", nullable: false),
                     Depreciacion = table.Column<float>(type: "real", nullable: false),
-                    Sello = table.Column<long>(type: "bigint", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DefectacionId = table.Column<int>(type: "int", nullable: true),
-                    FechaReparada = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FechaSalida = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Sello = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,12 +142,6 @@ namespace InventariosApi.Migrations
                         name: "FK_Equipos_Area_AreaId",
                         column: x => x.AreaId,
                         principalTable: "Area",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Equipos_Defectaciones_DefectacionId",
-                        column: x => x.DefectacionId,
-                        principalTable: "Defectaciones",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -175,6 +165,59 @@ namespace InventariosApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EquiposDefectados",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EstadoId = table.Column<int>(type: "int", nullable: false),
+                    AreaId = table.Column<int>(type: "int", nullable: false),
+                    TipoEquipoId = table.Column<int>(type: "int", nullable: false),
+                    SucursalId = table.Column<int>(type: "int", nullable: false),
+                    Inventario = table.Column<long>(type: "bigint", nullable: false),
+                    Valor = table.Column<float>(type: "real", nullable: false),
+                    Depreciacion = table.Column<float>(type: "real", nullable: false),
+                    DefectacionId = table.Column<int>(type: "int", nullable: false),
+                    Sello = table.Column<long>(type: "bigint", nullable: false),
+                    FechaReparada = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaSalida = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EquiposDefectados", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EquiposDefectados_Area_AreaId",
+                        column: x => x.AreaId,
+                        principalTable: "Area",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquiposDefectados_Defectaciones_DefectacionId",
+                        column: x => x.DefectacionId,
+                        principalTable: "Defectaciones",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquiposDefectados_Estados_EstadoId",
+                        column: x => x.EstadoId,
+                        principalTable: "Estados",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquiposDefectados_Sucursales_SucursalId",
+                        column: x => x.SucursalId,
+                        principalTable: "Sucursales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquiposDefectados_TipoEquipos_TipoEquipoId",
+                        column: x => x.TipoEquipoId,
+                        principalTable: "TipoEquipos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Componentes",
                 columns: table => new
                 {
@@ -183,7 +226,8 @@ namespace InventariosApi.Migrations
                     EquiposId = table.Column<int>(type: "int", nullable: false),
                     Serie = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EquiposDefectadosId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,6 +238,11 @@ namespace InventariosApi.Migrations
                         principalTable: "Equipos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Componentes_EquiposDefectados_EquiposDefectadosId",
+                        column: x => x.EquiposDefectadosId,
+                        principalTable: "EquiposDefectados",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -207,9 +256,9 @@ namespace InventariosApi.Migrations
                 {
                     table.PrimaryKey("PK_EquiposDefectadosLabores", x => new { x.EquiposDefectadosId, x.LaboresId });
                     table.ForeignKey(
-                        name: "FK_EquiposDefectadosLabores_Equipos_EquiposDefectadosId",
+                        name: "FK_EquiposDefectadosLabores_EquiposDefectados_EquiposDefectadosId",
                         column: x => x.EquiposDefectadosId,
-                        principalTable: "Equipos",
+                        principalTable: "EquiposDefectados",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -226,7 +275,7 @@ namespace InventariosApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EquiposId = table.Column<int>(type: "int", nullable: true),
+                    EquiposDefectadosId = table.Column<int>(type: "int", nullable: true),
                     TecnicoId = table.Column<int>(type: "int", nullable: false),
                     SucursalId = table.Column<int>(type: "int", nullable: true),
                     FechaEntrada = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -236,9 +285,9 @@ namespace InventariosApi.Migrations
                 {
                     table.PrimaryKey("PK_Ordenes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ordenes_Equipos_EquiposId",
-                        column: x => x.EquiposId,
-                        principalTable: "Equipos",
+                        name: "FK_Ordenes_EquiposDefectados_EquiposDefectadosId",
+                        column: x => x.EquiposDefectadosId,
+                        principalTable: "EquiposDefectados",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Ordenes_Sucursales_SucursalId",
@@ -260,6 +309,7 @@ namespace InventariosApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrdenId = table.Column<int>(type: "int", nullable: false),
+                    EquiposDefectadosId = table.Column<int>(type: "int", nullable: false),
                     FechaBaja = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comentario = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -267,12 +317,23 @@ namespace InventariosApi.Migrations
                 {
                     table.PrimaryKey("PK_EquiposBajas", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_EquiposBajas_EquiposDefectados_EquiposDefectadosId",
+                        column: x => x.EquiposDefectadosId,
+                        principalTable: "EquiposDefectados",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_EquiposBajas_Ordenes_OrdenId",
                         column: x => x.OrdenId,
                         principalTable: "Ordenes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Componentes_EquiposDefectadosId",
+                table: "Componentes",
+                column: "EquiposDefectadosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Componentes_EquiposId",
@@ -283,11 +344,6 @@ namespace InventariosApi.Migrations
                 name: "IX_Equipos_AreaId",
                 table: "Equipos",
                 column: "AreaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Equipos_DefectacionId",
-                table: "Equipos",
-                column: "DefectacionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Equipos_EstadoId",
@@ -305,10 +361,41 @@ namespace InventariosApi.Migrations
                 column: "TipoEquipoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EquiposBajas_EquiposDefectadosId",
+                table: "EquiposBajas",
+                column: "EquiposDefectadosId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EquiposBajas_OrdenId",
                 table: "EquiposBajas",
                 column: "OrdenId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquiposDefectados_AreaId",
+                table: "EquiposDefectados",
+                column: "AreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquiposDefectados_DefectacionId",
+                table: "EquiposDefectados",
+                column: "DefectacionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquiposDefectados_EstadoId",
+                table: "EquiposDefectados",
+                column: "EstadoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquiposDefectados_SucursalId",
+                table: "EquiposDefectados",
+                column: "SucursalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquiposDefectados_TipoEquipoId",
+                table: "EquiposDefectados",
+                column: "TipoEquipoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EquiposDefectadosLabores_LaboresId",
@@ -316,11 +403,11 @@ namespace InventariosApi.Migrations
                 column: "LaboresId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ordenes_EquiposId",
+                name: "IX_Ordenes_EquiposDefectadosId",
                 table: "Ordenes",
-                column: "EquiposId",
+                column: "EquiposDefectadosId",
                 unique: true,
-                filter: "[EquiposId] IS NOT NULL");
+                filter: "[EquiposDefectadosId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ordenes_SucursalId",
@@ -348,13 +435,16 @@ namespace InventariosApi.Migrations
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
+                name: "Equipos");
+
+            migrationBuilder.DropTable(
                 name: "Ordenes");
 
             migrationBuilder.DropTable(
                 name: "Labores");
 
             migrationBuilder.DropTable(
-                name: "Equipos");
+                name: "EquiposDefectados");
 
             migrationBuilder.DropTable(
                 name: "Tecnicos");
