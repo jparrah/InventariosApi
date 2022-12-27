@@ -10,7 +10,7 @@ using System.Text;
 
 namespace InventariosApi.Handlers.Queries
 {
-    public class LoginUsuario : IRequestHandler<LoginUsuarioRequest, string>
+    public class LoginUsuario : IRequestHandler<LoginUsuarioRequest, LoginUsuarioResponse>
     {
         private readonly IConfiguration _config;
         private readonly InventariosDbContext _context;
@@ -22,8 +22,9 @@ namespace InventariosApi.Handlers.Queries
             utiles=new Utiles();
         }
 
-        public async Task<string> Handle(LoginUsuarioRequest request, CancellationToken cancellationToken)
+        public async Task<LoginUsuarioResponse> Handle(LoginUsuarioRequest request, CancellationToken cancellationToken)
         {
+            LoginUsuarioResponse usuario;
             var pass = utiles.GetSha256Hash(request.Password);
             var usuarioLogueado=_context.Usuarios.Where(x=>x.UserName==request.UserName.ToLower()
                                                         && x.Password==pass.ToLower())
@@ -50,7 +51,12 @@ namespace InventariosApi.Handlers.Queries
                    expires: DateTime.Now.AddMinutes(60),
                    signingCredentials: credentials);
 
-               return new JwtSecurityTokenHandler().WriteToken(token);
+
+            usuario = new LoginUsuarioResponse();
+            usuario.status = "ok";
+            usuario.token = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return usuario;
             
             
         }

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace InventariosApi.Handlers.Command
 {
-    public class RegistrarUsuario : IRequestHandler<RegistrarUsuarioRequest, bool>
+    public class RegistrarUsuario : IRequestHandler<RegistrarUsuarioRequest, RegistrarUsuarioResponse>
     {
         private readonly InventariosDbContext _context;
         public Utiles utiles;
@@ -16,10 +16,9 @@ namespace InventariosApi.Handlers.Command
             utiles= new Utiles();
         }
 
-        public async Task<bool> Handle(RegistrarUsuarioRequest request, CancellationToken cancellationToken)
+        public async Task<RegistrarUsuarioResponse> Handle(RegistrarUsuarioRequest request, CancellationToken cancellationToken)
         {
 
-            var ok = false;
             if(request.Email==null) { 
             
             }
@@ -47,8 +46,10 @@ namespace InventariosApi.Handlers.Command
             _context.Add(usuario);
             _context.SaveChanges();
 
-            ok = true;
-            return ok;
+            var registarUsuarioResponse= new RegistrarUsuarioResponse();
+            registarUsuarioResponse.Ok = true;
+
+            return registarUsuarioResponse;
 
 
         }

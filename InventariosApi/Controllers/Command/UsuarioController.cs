@@ -20,7 +20,7 @@ namespace InventariosApi.Controllers.Command
 
         [HttpPost("RegistrarUsuario")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(bool), (int)System.Net.HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(RegistrarUsuarioResponse), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> RegistrarUsuario([FromBody] RegistrarUsuarioRequest request)
         {
             var respuesta = await _mediator.Send(request);

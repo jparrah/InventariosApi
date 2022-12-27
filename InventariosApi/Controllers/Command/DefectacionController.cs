@@ -8,7 +8,8 @@ using static InventariosApi.Mensajeria.Command.Defectacion;
 namespace InventariosApi.Controllers.Command
 {
     [Route("api/[controller]")]
-    [Authorize(Roles ="ADMIN")]
+    //[Authorize(Roles ="ADMIN")]
+    [AllowAnonymous]
     [ApiController]
     public class DefectacionController : Controller
     {

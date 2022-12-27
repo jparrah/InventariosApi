@@ -21,7 +21,7 @@ namespace InventariosApi.Controllers.Queries
 
         [HttpPost("Login")]
        
-        [ProducesResponseType(typeof(string), (int)System.Net.HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(LoginUsuarioResponse), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> Login([FromBody] LoginUsuarioRequest request)
         {
             var respuesta = await _mediator.Send(request);

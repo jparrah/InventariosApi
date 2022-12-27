@@ -8,7 +8,8 @@ using static InventariosApi.Mensajeria.Queries.Area;
 namespace InventariosApi.Controllers.Queries
 {
     [Route("api/[controller]")]
-    [Authorize(Roles ="ADMIN,USUARIO")]
+    // [Authorize(Roles ="ADMIN,USUARIO")]
+    [AllowAnonymous]
     [ApiController]
     public class AreaController : Controller
     {
@@ -18,9 +19,9 @@ namespace InventariosApi.Controllers.Queries
             _mediator = mediator;
         }
 
-        [HttpPost("ListarArea")]
+        [HttpGet("ListarArea")]
         [ProducesResponseType(typeof(IEnumerable<ListarAreasResponse>), (int)System.Net.HttpStatusCode.OK)]
-        public async Task<IActionResult> ListarArea([FromBody] ListarAreasRequest request)
+        public async Task<IActionResult> ListarArea([FromQuery] ListarAreasRequest request)
         {
             var respuesta = await _mediator.Send(request);
             return Ok(respuesta);
