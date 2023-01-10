@@ -7,8 +7,8 @@ using static InventariosApi.Mensajeria.Command.Area;
 namespace InventariosApi.Controllers.Command
 {
     [Route("api/[controller]")]
-    //[Authorize(Roles ="ADMIN")]
-    [AllowAnonymous]
+    [Authorize(Roles ="ADMIN")]
+   // [AllowAnonymous]
     [ApiController]
     public class AreaController : Controller
     {
