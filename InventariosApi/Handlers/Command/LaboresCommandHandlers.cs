@@ -17,7 +17,7 @@ namespace InventariosApi.Handlers.Command
             _mapper = mapper;
             _context = context;
         }
-    
+
         public async Task<bool> Handle(RegistrarLaborRequest request, CancellationToken cancellationToken)
         {
             var ok = false;

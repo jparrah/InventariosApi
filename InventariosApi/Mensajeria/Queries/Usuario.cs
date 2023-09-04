@@ -4,8 +4,8 @@ namespace InventariosApi.Mensajeria.Queries
 {
     public class LoginUsuarioRequest:IRequest<LoginUsuarioResponse>
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public string  UserName { get; set; }
+        public string  Password { get; set; }
 
     }
 
@@ -13,6 +13,7 @@ namespace InventariosApi.Mensajeria.Queries
     {
         public string status { get; set; }
         public string token { get; set; }
+        public string role { get; set; }
 
     }
 }
