@@ -2,15 +2,13 @@
 using InventariosApi.Entidades;
 using MediatR;
 using static InventariosApi.Mensajeria.Command.Area;
-using InventariosApi.Entidades;
-using Microsoft.EntityFrameworkCore;
 
 namespace InventariosApi.Handlers.Command
 {
     public class AreaCommandHandlers : IRequestHandler<RegistrarAreaRequest, bool>,
                       IRequestHandler<ModificarAreaRequest, ModificarAreaResponse>,
                       IRequestHandler<EliminarAreaRequest, bool>
-    { 
+    {
         private readonly IMapper _mapper;
         private readonly InventariosDbContext _context;
         public AreaCommandHandlers(IMapper mapper, InventariosDbContext context)
@@ -21,40 +19,42 @@ namespace InventariosApi.Handlers.Command
 
         public async Task<bool> Handle(RegistrarAreaRequest request, CancellationToken cancellationToken)
         {
-            var ok = false;
-            var nuevaArea=_mapper.Map<Area>(request);
+            var nuevaArea = _mapper.Map<Area>(request);
             await _context.Area.AddAsync(nuevaArea);
             _context.SaveChanges();
-            ok = true;
+            var ok = true;
             return ok;
-
-
 
         }
 
         public async Task<ModificarAreaResponse> Handle(ModificarAreaRequest request, CancellationToken cancellationToken)
         {
-            
-               var area = _context.Area.Where(x => x.Id==request.Id).FirstOrDefault() ?? default;
-           
-               var areaModificada=_mapper.Map(request,area);
-                _context.Area.Update(areaModificada);
-                _context.SaveChanges();
 
-                return _mapper.Map<ModificarAreaResponse>(areaModificada);
-          
-            
+            var area = 
+                _context
+                .Area
+                .Where(x => x.Id == request.Id)
+                .FirstOrDefault()
+                ?? 
+                default;
+
+            var areaModificada = _mapper.Map(request, area);
+            _context.Area.Update(areaModificada);
+            _context.SaveChanges();
+
+            return _mapper.Map<ModificarAreaResponse>(areaModificada);
+
+
 
         }
 
-        public async  Task<bool> Handle(EliminarAreaRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EliminarAreaRequest request, CancellationToken cancellationToken)
         {
-            var ok=false;
-            var area=_context.Area.Where(x=>x.Id==request.Id).FirstOrDefault() ?? default;
-             _context.Area.Remove(area);
+            var area = _context.Area.Where(x => x.Id == request.Id).FirstOrDefault() ?? default;
+            _context.Area.Remove(area);
             _context.SaveChanges();
-             ok= true;
-             return ok;
+            var ok = true;
+            return ok;
         }
     }
 }

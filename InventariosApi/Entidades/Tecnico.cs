@@ -6,7 +6,7 @@ namespace InventariosApi.Entidades
     {
         public Tecnico()
         {
-            Ordenes = new HashSet<Orden>();
+            Ordenes = [];
         }
         [Key]
         public int Id { get; set; }

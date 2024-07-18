@@ -9,14 +9,14 @@ namespace InventariosApi.Mensajeria.Queries
         public class ListarDefectacionesResponse
         {
             public int Id { get; set; }
-            public string NombreDefectacion { get; set; }
+            public string? NombreDefectacion { get; set; }
         }
 
         public record ObtenerDefectacionRequest(int Id):IRequest<ObtenerDefectacionResponse>;
         public class ObtenerDefectacionResponse
         {
             public int Id { get; set; }
-            public string NombreDefectacion { get; set; }
+            public string? NombreDefectacion { get; set; }
         }
     }
 }

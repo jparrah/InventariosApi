@@ -6,8 +6,8 @@ namespace InventariosApi.Entidades
     {
         public Area()
         {
-            Equipos = new HashSet<Equipos>();
-            EquiposDefectados = new HashSet<EquiposDefectados>();
+            Equipos = [];
+            EquiposDefectados = [];
         }
         [Key]
         public int Id { get; set; }

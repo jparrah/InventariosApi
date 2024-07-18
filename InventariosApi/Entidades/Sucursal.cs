@@ -2,11 +2,11 @@
 
 namespace InventariosApi.Entidades
 {
-    public partial class Sucursal
+    public  class Sucursal
     {
         public Sucursal()
         {
-            Equipos = new HashSet<Equipos>();
+            Equipos = [];
             EquiposDefectados= new HashSet<EquiposDefectados>();
             Ordenes = new HashSet<Orden>();
         }

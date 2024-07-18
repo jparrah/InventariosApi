@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static InventariosApi.Mensajeria.Queries.Defectacion;
 using static InventariosApi.Mensajeria.Queries.Equipo;
 
 namespace InventariosApi.Handlers.Queries

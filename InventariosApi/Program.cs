@@ -8,7 +8,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<InventariosDbContext>(options =>
-                                                    options.UseSqlServer(builder.Configuration.GetConnectionString("ApiConnection")));
+                                                    options.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("ApiConnection")));
 // Add services to the container.
 builder.Services.AddCors(options=> options.AddPolicy("AllowedApp",
                                 builder=>builder.AllowAnyOrigin()
